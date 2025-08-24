@@ -14,7 +14,7 @@
 
     body {
       font-family: "Segoe UI", sans-serif;
-      background: linear-gradient(180deg, #121212, #000);
+      background: linear-gradient(180deg, #121212, #000);  
       color: white;
       display: flex;
       flex-direction: column;
@@ -157,7 +157,7 @@
 
     <div class="controls">
       <button onclick="prevSong()">⏮</button>
-      <button onclick="togglePlay()" id="playBtn">▶️</button>
+      <button onclick="togglePlay()" id="playBtn">▶︎</button>
       <button onclick="nextSong()">⏭</button>
     </div>
   </div>
@@ -214,7 +214,7 @@
       audio.src = songs[index].file;
       cover.src = songs[index].cover;
       title.textContent = songs[index].title;
-      playBtn.textContent = "▶️";
+      playBtn.textContent = "▶︎";
     }
 
     function togglePlay() {
@@ -223,7 +223,7 @@
         playBtn.textContent = "⏸";
       } else {
         audio.pause();
-        playBtn.textContent = "▶️";
+        playBtn.textContent = "▶︎";
       }
     }
 
