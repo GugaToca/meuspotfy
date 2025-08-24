@@ -220,7 +220,7 @@
     function togglePlay() {
       if (audio.paused) {
         audio.play();
-        playBtn.textContent = "⏸";
+        playBtn.textContent = "❙❙";
       } else {
         audio.pause();
         playBtn.textContent = "▶︎";
@@ -231,14 +231,14 @@
       currentIndex = (currentIndex + 1) % songs.length;
       loadSong(currentIndex);
       audio.play();
-      playBtn.textContent = "⏸";
+      playBtn.textContent = "❙❙";
     }
 
     function prevSong() {
       currentIndex = (currentIndex - 1 + songs.length) % songs.length;
       loadSong(currentIndex);
       audio.play();
-      playBtn.textContent = "⏸";
+      playBtn.textContent = "❙❙";
     }
 
     // Atualizar barra de progresso
@@ -265,7 +265,7 @@
       btn.onclick = () => {
         loadSong(index);
         audio.play();
-        playBtn.textContent = "⏸";
+        playBtn.textContent = "❙❙";
       };
       playlistDiv.appendChild(btn);
     });
