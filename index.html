@@ -139,6 +139,37 @@
         height: 45px;
         font-size: 18px;
       }
+
+      .lyrics-btn {
+  margin-top: 15px;
+  padding: 20px 30px;
+  background: #0d8121;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.lyrics-btn:hover {
+  background: #1DB954;
+  transform: scale(1.05);
+}
+
+.lyrics-box {
+  margin-top: 15px;
+  padding: 15px;
+  background: #222;
+  border-radius: 10px;
+  max-width: 350px;
+  width: 100%;
+  text-align: left;
+  white-space: pre-line; /* mantém as quebras de linha */
+  line-height: 1.5;
+  font-size: 14px;
+}
+
     }
   </style>
 </head>
@@ -149,6 +180,11 @@
     <img id="cover" class="cover" src="" alt="Capa da música">
     <h2 id="title">Título da Música</h2>
     <audio id="audio"></audio>
+
+    <button onclick="toggleLyrics()" id="lyricsBtn" class="lyrics-btn">Letra</button>
+      <div id="lyricsBox" style="display:none;" class="lyrics-box"></div>
+
+
 
     <!-- Barra de progresso -->
     <div class="progress-container" onclick="setProgress(event)">
@@ -168,10 +204,49 @@
 
   <script>
     const songs = [
+
       {
-        title: "Banda Resgate - 5:50 AM ",
+        title: "Banda Resgate - 5:50 AM",
         file: "resgate_5_50am.mp3",
-        cover: "bandaresgate.png"
+        cover: "bandaresgate.png",
+        lyrics: `Letra da Musica
+
+        E a história dessa música, 
+        é só a de mais um,
+        Entre milhares e milhares
+        Que eram muito loucos, 
+        mas um dia se encontraram com Jesus
+
+        Abro os olhos sob o mesmo tecto todo dia
+        Tudo outra vez
+        Acordo, um tapa no relógio, a mente tá vazia
+        São dez pras seis
+
+        Hoje a morte do meu ego tá fazendo aniversário
+        Será que eu vou chegar
+        Chegar ao fim de mais um calendário?
+
+        Eu não sei
+        Eu não sei
+        Eu não sei
+
+        É tudo sempre igual
+        Disseram que o Teu amor é novo a cada dia
+        Eu pensei
+        Quero ouvir a Tua voz falar o que eu queria
+        São dez pra seis
+
+        Se é pra Te seguir e então matar aquela velha sede
+        Se é pra Te servir e nunca mais cair na mesma rede
+        Eu vou
+        Eu vou
+        Eu vou
+
+        Se é pra Te seguir e então matar aquela velha sede
+        Se é pra Te servir e nunca mais cair na mesma rede
+        Eu vou
+        Eu vou
+        Te seguir`
       },
       {
         title: "Banda Resgate - Rock da Vovó",
@@ -277,7 +352,21 @@
 
     // Carregar a primeira música
     loadSong(currentIndex);
+
+    function toggleLyrics() {
+  const lyricsBox = document.getElementById("lyricsBox");
+  const lyricsBtn = document.getElementById("lyricsBtn");
+  
+  if (lyricsBox.style.display === "none") {
+    lyricsBox.style.display = "block";
+    lyricsBox.textContent = songs[currentIndex].lyrics || "Letra não disponível.";
+    lyricsBtn.textContent = "Fechar";
+  } else {
+    lyricsBox.style.display = "none";
+    lyricsBtn.textContent = "Letra";
+  }
+}
+
   </script>
 </body>
 </html>
-
