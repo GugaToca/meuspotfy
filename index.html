@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha Playlist</title>
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #121212, #000);  
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 20px 0;
+      font-size: 28px;
+      color: #1DB954;
+    }
+
+    .player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #181818;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+      max-width: 350px;
+      width: 100%;
+    }
+
+    .cover {
+      width: 100%;
+      max-width: 300px;
+      height: 300px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      object-fit: cover;
+    }
+
+    #title {
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .progress-container {
+      width: 100%;
+      background: #333;
+      height: 6px;
+      border-radius: 5px;
+      margin: 15px 0;
+      cursor: pointer;
+    }
+
+    .progress {
+      height: 100%;
+      background: #1DB954;
+      width: 0%;
+      border-radius: 5px;
+      transition: width 0.2s;
+    }
+
+    .controls {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    button {
+      background: #1DB954;
+      border: none;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      font-size: 20px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background: #1ed760;
+    }
+
+    .playlist {
+      margin-top: 30px;
+      max-width: 350px;
+      width: 100%;
+    }
+
+    .playlist h2 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      color: #1DB954;
+    }
+
+    .playlist button {
+      background: #0d8121;
+      color: white;
+      border: none;
+      padding: 12px 15px;
+      width: 100%;
+      margin: 5px 0;
+      border-radius: 10px;
+      text-align: left;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .playlist button:hover {
+      background: #264729;
+    }
+
+    @media (max-width: 500px) {
+      .cover {
+        height: 220px;
+      }
+      button {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Minha Playlist</h1>
+
+  <div class="player">
+    <img id="cover" class="cover" src="" alt="Capa da música">
+    <h2 id="title">Título da Música</h2>
+    <audio id="audio"></audio>
+
+    <!-- Barra de progresso -->
+    <div class="progress-container" onclick="setProgress(event)">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="controls">
+      <button onclick="prevSong()">❮❮</button>
+      <button onclick="togglePlay()" id="playBtn">▶︎</button>
+      <button onclick="nextSong()">❯❯</button>
+    </div>
+  </div>
+
+  <div class="playlist" id="playlist">
+    <h2>Playlist</h2>
+  </div>
+
+  <script>
+    const songs = [
+      {
+        title: "Banda Resgate - 5:50 AM ",
+        file: "resgate_5_50am.mp3",
+        cover: "bandaresgate.png"
+      },
+      {
+        title: "Banda Resgate - Rock da Vovó",
+        file: "Resgate - Rock da Vovó.mp3",
+        cover: "bandaresgate.png"
+      },
+      {
+        title: "Banda Resgate - Infinitamente Mais",
+        file: "resgate_infinitamente_mais.mp3",
+        cover: "bandaresgate.png"
+      },
+      {
+        title: "Kami Kam - Prólogo ",
+        file: "kami_kam_prologo_clipe.mp3",
+        cover: "kami_kam.png"
+      },
+      {
+        title: "Kami Kam - Publicano ",
+        file: "kami_kam_publicano_clip.mp3",
+        cover: "kami_kam.png"
+      },
+      {
+        title: "Kami Kam - Mortís ",
+        file: "kami_kam_mortis_clip.mp3",
+        cover: "kami_kam.png"
+      },
+      {
+        title: "Morada - Jesus em Tua Presença ",
+        file: "",
+        cover: "jesus_em_tua_presença_morada.mp3"
+      },
+
+    ];
+
+    let currentIndex = 0;
+    const audio = document.getElementById("audio");
+    const cover = document.getElementById("cover");
+    const title = document.getElementById("title");
+    const playlistDiv = document.getElementById("playlist");
+    const progress = document.getElementById("progress");
+    const playBtn = document.getElementById("playBtn");
+
+    function loadSong(index) {
+      currentIndex = index;
+      audio.src = songs[index].file;
+      cover.src = songs[index].cover;
+      title.textContent = songs[index].title;
+      playBtn.textContent = "▶︎";
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        playBtn.textContent = "❙❙";
+      } else {
+        audio.pause();
+        playBtn.textContent = "▶︎";
+      }
+    }
+
+    function nextSong() {
+      currentIndex = (currentIndex + 1) % songs.length;
+      loadSong(currentIndex);
+      audio.play();
+      playBtn.textContent = "❙❙";
+    }
+
+    function prevSong() {
+      currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+      loadSong(currentIndex);
+      audio.play();
+      playBtn.textContent = "❙❙";
+    }
+
+    // Atualizar barra de progresso
+    audio.addEventListener("timeupdate", () => {
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progress.style.width = percent + "%";
+    });
+
+    // Pular para parte clicada
+    function setProgress(e) {
+      const width = e.currentTarget.clientWidth;
+      const clickX = e.offsetX;
+      const duration = audio.duration;
+      audio.currentTime = (clickX / width) * duration;
+    }
+
+    // Passar para próxima música ao terminar
+    audio.addEventListener("ended", nextSong);
+
+    // Criar lista de músicas
+    songs.forEach((song, index) => {
+      const btn = document.createElement("button");
+      btn.textContent = song.title;
+      btn.onclick = () => {
+        loadSong(index);
+        audio.play();
+        playBtn.textContent = "❙❙";
+      };
+      playlistDiv.appendChild(btn);
+    });
+
+    // Carregar a primeira música
+    loadSong(currentIndex);
+  </script>
+</body>
+</html>
